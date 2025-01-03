@@ -4,18 +4,18 @@ import Swal from "sweetalert2";
 import { AxiosError } from "axios";
 import loading_gif from "/loading_gif.gif";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-const RegisterForm = () => {
+const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState({
     email: "",
     password: "",
-    confirmPassword: "",
   });
 
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const validateEmail = (email: string) => {
     return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(
@@ -23,16 +23,10 @@ const RegisterForm = () => {
     );
   };
 
-  const validatePassword = (password: string) => {
-    return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).{6,}$/.test(
-      password
-    );
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     let valid = true;
-    let errors = { email: "", password: "", confirmPassword: "" };
+    let errors = { email: "", password: "" };
 
     if (email.trim() === "") {
       errors.email = "Email is required";
@@ -45,15 +39,6 @@ const RegisterForm = () => {
     if (password.trim() === "") {
       errors.password = "Password is required";
       valid = false;
-    } else if (!validatePassword(password)) {
-      errors.password =
-        "Password must be at least 6 characters long, upper and lower case, one number and one special character.";
-      valid = false;
-    }
-
-    if (password !== confirmPassword) {
-      errors.confirmPassword = "Passwords do not match";
-      valid = false;
     }
 
     setErrors(errors);
@@ -62,18 +47,22 @@ const RegisterForm = () => {
       setIsLoading(true);
       try {
         const { data } = await axios.post(
-          `${import.meta.env.VITE_SERVER_URL}/register`,
+          `${import.meta.env.VITE_SERVER_URL}/login`,
           {
             email,
             password,
           }
         );
 
+        localStorage.setItem("token", data.token);
+
         Swal.fire({
           icon: "success",
-          title: "User created",
-          text: data,
+          title: "Login Successful",
+          text: data.message,
         });
+
+        navigate("/main");
       } catch (error) {
         Swal.fire({
           icon: "error",
@@ -93,7 +82,7 @@ const RegisterForm = () => {
     bg-gradient-to-b from-black/10 to-black/30 backdrop-blur-md "
     >
       <div className=" mb-[80px] mt-[15px]">
-        <h1 className=" font-roboto font-black text-[30px] ">Register</h1>
+        <h1 className=" font-roboto font-black text-[30px] ">Login</h1>
       </div>
 
       <div className=" flex flex-col justify-center items-center gap-2 w-[600px] max-w-[100%] mb-[50px] ">
@@ -110,7 +99,7 @@ const RegisterForm = () => {
         {errors.email && <p className="text-red-500">{errors.email}</p>}
       </div>
 
-      <div className=" flex flex-col justify-center items-center gap-2 w-[600px] max-w-[100%] mb-[50px]">
+      <div className=" flex flex-col justify-center items-center gap-2 w-[600px] max-w-[100%] mb-[100px]">
         <label htmlFor="password" className="text-[20px] font-roboto">
           Password
         </label>
@@ -124,22 +113,6 @@ const RegisterForm = () => {
         {errors.password && <p className="text-red-500">{errors.password}</p>}
       </div>
 
-      <div className=" flex flex-col justify-center items-center gap-2  w-[600px] max-w-[100%] mb-[100px]">
-        <label htmlFor="confirm_password" className="text-[20px] font-roboto">
-          Confirm Password
-        </label>
-        <input
-          type="password"
-          id="confirm_password"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          className=" p-2 rounded-[8px] font-roboto w-[70%] shadow-2xl"
-        />
-        {errors.confirmPassword && (
-          <p className="text-red-500">{errors.confirmPassword}</p>
-        )}
-      </div>
-
       {isLoading ? (
         <img
           src={loading_gif}
@@ -149,16 +122,16 @@ const RegisterForm = () => {
       ) : (
         <input
           type="submit"
-          value="Send"
-          className=" font-roboto bg-blue-400 mb-[60px] p-2 w-[200px] shadow-2xl shadow-blue-600/50 rounded-[7px] border border-blue-500 font-bold cursor-pointer transition-all duration-[0.15s] hover:bg-blue-500 hover:scale-[1.1] hover:shadow-blue-700/70"
+          value="Login"
+          className=" font-roboto bg-blue-400 mb-[50px] p-2 w-[200px] shadow-2xl shadow-blue-600/50 rounded-[7px] border border-blue-500 font-bold cursor-pointer transition-all duration-[0.15s] hover:bg-blue-500 hover:scale-[1.1] hover:shadow-blue-700/70"
         />
       )}
 
       <div className=" mb-[40px] transition-all duration-[0.1s] hover:scale-[1.05]">
-        <Link to="/login">
+        <Link to="/">
           <h1 className=" font-roboto">
-            Already have an account? Go to
-            <span className=" font-extrabold"> Login</span>
+            Not registered? Go to
+            <span className=" font-extrabold"> Register</span>
           </h1>
         </Link>
       </div>
@@ -166,4 +139,4 @@ const RegisterForm = () => {
   );
 };
 
-export default RegisterForm;
+export default LoginForm;
