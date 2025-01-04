@@ -6,16 +6,22 @@ import loading_gif from "/loading_gif.gif";
 import { Link } from "react-router-dom";
 
 const RegisterForm = () => {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState({
+    name: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
 
   const [isLoading, setIsLoading] = useState(false);
+
+  const validateName = (name: string) => {
+    return /^[a-zA-ZñÑ\s]+$/.test(name);
+  };
 
   const validateEmail = (email: string) => {
     return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(
@@ -32,7 +38,19 @@ const RegisterForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     let valid = true;
-    let errors = { email: "", password: "", confirmPassword: "" };
+    let errors = { name: "", email: "", password: "", confirmPassword: "" };
+
+    if (name.trim() === "") {
+      errors.name = "Name is required";
+      valid = false;
+    } else if (name.length < 2 || name.length > 100) {
+      errors.name = "The name must have at least 2 characters";
+      valid = false;
+    } else if (!validateName(name)) {
+      errors.name =
+        "Name must contain only letters, no numbers or special characters";
+      valid = false;
+    }
 
     if (email.trim() === "") {
       errors.email = "Email is required";
@@ -64,6 +82,7 @@ const RegisterForm = () => {
         const { data } = await axios.post(
           `${import.meta.env.VITE_SERVER_URL}/register`,
           {
+            name,
             email,
             password,
           }
@@ -94,6 +113,20 @@ const RegisterForm = () => {
     >
       <div className=" mb-[80px] mt-[15px]">
         <h1 className=" font-roboto font-black text-[30px] ">Register</h1>
+      </div>
+
+      <div className=" flex flex-col justify-center items-center gap-2 w-[600px] max-w-[100%] mb-[50px] ">
+        <label htmlFor="name" className="text-[20px] font-roboto">
+          Name
+        </label>
+        <input
+          type="text"
+          id="name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          className=" p-2 rounded-[8px] w-[70%] font-roboto shadow-2xl"
+        />
+        {errors.name && <p className="text-red-500">{errors.name}</p>}
       </div>
 
       <div className=" flex flex-col justify-center items-center gap-2 w-[600px] max-w-[100%] mb-[50px] ">

@@ -62,7 +62,8 @@ const LoginForm = () => {
           text: data.message,
         });
 
-        navigate("/main");
+        navigate("/main", { replace: true });
+        
       } catch (error) {
         Swal.fire({
           icon: "error",
