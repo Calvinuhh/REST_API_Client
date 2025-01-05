@@ -1,69 +1,59 @@
 import { useState } from "react";
-import "./Nav.css";
+import { Link, useLocation } from "react-router-dom";
 
-interface NavProps {
-  onNavChange: (button: string) => void;
-}
-
-const Nav = ({ onNavChange }: NavProps) => {
-  const [activeButton, setActiveButton] = useState("Clients");
+const Nav = () => {
+  const location = useLocation();
+  const [activeButton, setActiveButton] = useState(location.pathname);
 
   const handleNavChange = (button: string) => {
     setActiveButton(button);
-    onNavChange(button);
   };
 
   return (
-    <nav className="nav-container">
-      <div className={`nav-item ${activeButton === "Clients" ? "active" : ""}`}>
-        <img
-          className="nav-image"
-          src="/clients.png"
-          alt="logo"
-          onClick={() => handleNavChange("Clients")}
-        />
-        <button
-          onClick={() => handleNavChange("Clients")}
-          disabled={activeButton === "Clients"}
-        >
-          Clients
-        </button>
-      </div>
-
-      <div
-        className={`nav-item ${activeButton === "Products" ? "active" : ""}`}
+    <nav className="relative flex w-[500px] justify-between mx-auto mt-[100px] items-center font-roboto h-[100px] mb-[70px]">
+      <Link
+        to="/clients"
+        className={`flex flex-col items-center transition-all ease-in duration-[0.1s] hover:scale-[1.1] ${
+          activeButton === "/clients" ? "pointer-events-none" : ""
+        }`}
+        onClick={() => handleNavChange("/clients")}
       >
-        <img
-          className="nav-image"
-          src="/products.png"
-          alt="logo"
-          onClick={() => handleNavChange("Products")}
-        />
-        <button
-          onClick={() => handleNavChange("Products")}
-          disabled={activeButton === "Products"}
-        >
-          Products
-        </button>
-      </div>
+        <img className="w-[90px]" src="/clients.png" alt="logo" />
+        <h2>Clients</h2>
+      </Link>
 
-      <div className={`nav-item ${activeButton === "Orders" ? "active" : ""}`}>
-        <img
-          className="nav-image"
-          src="/orders.png"
-          alt="logo"
-          onClick={() => handleNavChange("Orders")}
-        />
-        <button
-          onClick={() => handleNavChange("Orders")}
-          disabled={activeButton === "Orders"}
-        >
-          Orders
-        </button>
-      </div>
+      <Link
+        to="/products"
+        className={`flex flex-col items-center transition-all ease-in duration-[0.1s] hover:scale-[1.1] ${
+          activeButton === "/products" ? "pointer-events-none" : ""
+        }`}
+        onClick={() => handleNavChange("/products")}
+      >
+        <img className="w-[100px]" src="/products.png" alt="logo" />
+        <h2>Products</h2>
+      </Link>
+
+      <Link
+        to="/orders"
+        className={`flex flex-col items-center transition-all ease-in duration-[0.1s] hover:scale-[1.1] ${
+          activeButton === "/orders" ? "pointer-events-none" : ""
+        }`}
+        onClick={() => handleNavChange("/orders")}
+      >
+        <img className="w-[100px]" src="/orders.png" alt="logo" />
+        <h2>Orders</h2>
+      </Link>
 
       <div
-        className={`nav-indicator ${activeButton.toLowerCase()} ${activeButton.toLowerCase()}-color`}
+        className={`absolute bottom-0 h-[6px] w-[70px] transition-transform duration-300 ${
+          activeButton === "/clients"
+            ? "transform translate-x-[10px] translate-y-[20px] bg-[#4dcfe3]"
+            : activeButton === "/products"
+            ? "transform translate-x-[209px] translate-y-[20px] bg-[#a5c190]"
+            : activeButton === "/orders"
+            ? "transform translate-x-[417px] translate-y-[20px] bg-[#fd8148]"
+            : ""
+        }`}
       ></div>
     </nav>
   );

@@ -8,7 +8,7 @@ const AuthLayouts = () => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      navigate("/main", { replace: true });
+      navigate("/clients", { replace: true });
     }
   }, [navigate]);
 

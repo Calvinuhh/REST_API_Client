@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "../axios/config";
-import { isAxiosError, AxiosError } from "axios";
+import { AxiosError } from "axios";
 import Swal from "sweetalert2";
 import newIcon from "/equipo.png";
 import { Link } from "react-router-dom";

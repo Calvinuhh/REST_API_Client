@@ -132,7 +132,7 @@ const NewClient = () => {
   return (
     <div className="p-3">
       <Link
-        to="/main"
+        to="/clients"
         className="absolute top-20 left-28 transition-all duration-[0.1s] ease-out hover:scale-[1.2]"
       >
         <img src={back_btn} alt="Back" className="w-8 h-8 cursor-pointer" />
