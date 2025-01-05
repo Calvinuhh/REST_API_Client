@@ -10,7 +10,7 @@ const CRMLayouts = () => {
     const petition = async () => {
       try {
         const { data } = await axios("/user");
-        localStorage.setItem("user", JSON.stringify(data.name));
+        localStorage.setItem("user", JSON.stringify(data));
       } catch (error) {
         navigate("/login", { replace: true });
         localStorage.removeItem("user");

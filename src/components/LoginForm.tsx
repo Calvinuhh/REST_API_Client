@@ -63,7 +63,6 @@ const LoginForm = () => {
         });
 
         navigate("/main", { replace: true });
-        
       } catch (error) {
         Swal.fire({
           icon: "error",
@@ -129,7 +128,7 @@ const LoginForm = () => {
       )}
 
       <div className=" mb-[40px] transition-all duration-[0.1s] hover:scale-[1.05]">
-        <Link to="/">
+        <Link to="/register">
           <h1 className=" font-roboto">
             Not registered? Go to
             <span className=" font-extrabold"> Register</span>

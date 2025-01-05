@@ -11,11 +11,11 @@ const Main = () => {
 
   useEffect(() => {
     setInterval(() => {
-      const user = localStorage.getItem("user")
-        ? JSON.parse(localStorage.getItem("user") as string)
-        : null;
+      const user = localStorage.getItem("user");
+
       if (user) {
-        setUserName(user);
+        const { name } = JSON.parse(user);
+        setUserName(name);
       }
     }, 1000);
   }, []);
@@ -37,10 +37,10 @@ const Main = () => {
     <div className="p-5">
       <div className="header flex justify-between items-center">
         <div className="text-left">
-          <h1 className="text-xl font-bold">
+          <h1 className="text-xl font-bold font-roboto">
             {userName === null
-              ? "Cargando..."
-              : `Hola, ${userName}! Administra tus recursos!`}
+              ? "Loading..."
+              : `Hi ${userName}! Manage your resources!`}
           </h1>
         </div>
         <LogoutBtn />
