@@ -4,6 +4,7 @@ import Swal from "sweetalert2";
 import { AxiosError } from "axios";
 import loading_gif from "/loading_gif.gif";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const RegisterForm = () => {
   const [name, setName] = useState("");
@@ -16,6 +17,8 @@ const RegisterForm = () => {
     password: "",
     confirmPassword: "",
   });
+
+  const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -93,6 +96,7 @@ const RegisterForm = () => {
           title: "User created",
           text: data,
         });
+        navigate("/login");
       } catch (error) {
         Swal.fire({
           icon: "error",
