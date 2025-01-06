@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 
-const DefaultLayout = () => {
+const NewItemLayout = () => {
   return (
     <div className=" min-h-screen bg-gradient-to-b from-[#6279c4] to-[#f9fafb]">
       <Outlet />
@@ -8,4 +8,4 @@ const DefaultLayout = () => {
   );
 };
 
-export default DefaultLayout;
+export default NewItemLayout;

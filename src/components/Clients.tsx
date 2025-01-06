@@ -6,6 +6,7 @@ import newIcon from "/equipo.png";
 import { Link } from "react-router-dom";
 import delete_btn from "/borrar.png";
 import loading_gif from "/loading_gif.gif";
+import edit_logo from "/edit.png";
 
 interface Client {
   _id: string;
@@ -46,6 +47,64 @@ const Clients = () => {
     );
     setFilteredClients(filtered);
   }, [searchTerm, clients]);
+
+  const handleEdit = async (id: string) => {
+    const clientToEdit = clients.find((client) => client._id === id);
+    if (!clientToEdit) return;
+
+    const { value: formValues } = await Swal.fire({
+      title: "Edit Client",
+      html: `
+        <input id="swal-input1" class="swal2-input" placeholder="Name" value="${clientToEdit.name}">
+        <input id="swal-input2" class="swal2-input" placeholder="Lastname" value="${clientToEdit.lastname}">
+        <input id="swal-input3" class="swal2-input" placeholder="Phone" value="${clientToEdit.phone}">
+      `,
+      focusConfirm: false,
+      showCancelButton: true,
+      confirmButtonText: "Save",
+      cancelButtonText: "Cancel",
+      preConfirm: () => {
+        const name = (
+          document.getElementById("swal-input1") as HTMLInputElement
+        ).value;
+        const lastname = (
+          document.getElementById("swal-input2") as HTMLInputElement
+        ).value;
+        const phone = (
+          document.getElementById("swal-input3") as HTMLInputElement
+        ).value;
+        return { name, lastname, phone };
+      },
+    });
+
+    if (formValues) {
+      try {
+        const response = await axios.patch(`/clients/${id}`, formValues);
+        Swal.fire({
+          icon: "success",
+          title: "Client Updated",
+          text: response.data,
+        });
+
+        setClients((prevClients) =>
+          prevClients.map((client) =>
+            client._id === id ? { ...client, ...formValues } : client
+          )
+        );
+        setFilteredClients((prevFiltered) =>
+          prevFiltered.map((client) =>
+            client._id === id ? { ...client, ...formValues } : client
+          )
+        );
+      } catch (error) {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: String((error as AxiosError).response?.data),
+        });
+      }
+    }
+  };
 
   const handleDelete = async (id: string) => {
     const result = await Swal.fire({
@@ -127,6 +186,14 @@ const Clients = () => {
                   className="w-[30px] cursor-pointer"
                 />
               </button>
+
+              <img
+                src={edit_logo}
+                alt="edit_logo"
+                className="absolute top-[60px] right-4 w-[25px] cursor-pointer"
+                onClick={() => handleEdit(client._id)}
+              />
+
               <h2 className="text-xl font-semibold mb-4 font-roboto">
                 {client.name} {client.lastname}
               </h2>

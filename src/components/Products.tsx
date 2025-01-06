@@ -6,6 +6,7 @@ import newIcon from "/newProduct.png";
 import { Link } from "react-router-dom";
 import delete_btn from "/borrar.png";
 import loading_gif from "/loading_gif.gif";
+import edit_logo from "/edit.png";
 
 interface Product {
   _id: string;
@@ -45,6 +46,66 @@ const Products = () => {
     }
     setFilteredProducts(sorted);
   }, [sortOption, products]);
+
+  const handleEdit = async (id: string) => {
+    const productToEdit = products.find((product) => product._id === id);
+    if (!productToEdit) return;
+
+    const { value: formValues } = await Swal.fire({
+      title: "Edit Product",
+      html: `
+        <input id="swal-input1" class="swal2-input" placeholder="Name" value="${productToEdit.name}">
+        <input id="swal-input2" class="swal2-input" placeholder="Price" value="${productToEdit.price}">
+      `,
+      focusConfirm: false,
+      showCancelButton: true,
+      confirmButtonText: "Save",
+      cancelButtonText: "Cancel",
+      preConfirm: () => {
+        const name = (
+          document.getElementById("swal-input1") as HTMLInputElement
+        ).value;
+        const price = parseFloat(
+          (document.getElementById("swal-input2") as HTMLInputElement).value
+        );
+
+        if (isNaN(price) || price <= 0) {
+          Swal.showValidationMessage("Price must be a valid positive number");
+          return;
+        }
+
+        return { name, price };
+      },
+    });
+
+    if (formValues) {
+      try {
+        const response = await axios.patch(`/products/${id}`, formValues);
+        Swal.fire({
+          icon: "success",
+          title: "Product Updated",
+          text: response.data,
+        });
+
+        setProducts((prevProducts) =>
+          prevProducts.map((product) =>
+            product._id === id ? { ...product, ...formValues } : product
+          )
+        );
+        setFilteredProducts((prevFiltered) =>
+          prevFiltered.map((product) =>
+            product._id === id ? { ...product, ...formValues } : product
+          )
+        );
+      } catch (error) {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: String((error as AxiosError).response?.data),
+        });
+      }
+    }
+  };
 
   const handleDelete = async (id: string) => {
     const result = await Swal.fire({
@@ -128,6 +189,14 @@ const Products = () => {
                   className="w-[30px] cursor-pointer"
                 />
               </button>
+
+              <img
+                src={edit_logo}
+                alt="edit_logo"
+                className="absolute top-[60px] right-4 w-[25px] cursor-pointer"
+                onClick={() => handleEdit(product._id)}
+              />
+
               <h2 className="text-xl font-semibold mb-4 font-roboto">
                 {product.name}
               </h2>
