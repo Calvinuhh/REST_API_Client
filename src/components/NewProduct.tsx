@@ -19,7 +19,7 @@ const NewProduct = () => {
 
   const [loading, setLoading] = useState(false);
 
-  const validateName = (name: string) => /^[a-zA-ZñÑ\s]+$/.test(name);
+  const validateName = (name: string) => /^[a-zA-ZñÑ\s.\d]+$/.test(name);
   const validatePrice = (price: string) => /^\d+$/.test(price);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,7 +47,7 @@ const NewProduct = () => {
       isValid = false;
     } else if (!validateName(formData.name)) {
       newErrors.name =
-        "Name must contain only letters and spaces, no numbers or special characters.";
+        "Name must contain only letters, spaces and numbers, no special characters.";
       isValid = false;
     }
 
