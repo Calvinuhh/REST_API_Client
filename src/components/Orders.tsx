@@ -25,6 +25,7 @@ interface Order {
   client: Client;
   products: Product[];
   total: number;
+  date: string;
 }
 
 const Orders = () => {
@@ -49,7 +50,6 @@ const Orders = () => {
 
   const handleDelete = async (id: string) => {
     const result = await Swal.fire({
-      icon: "warning",
       title: "Are you sure?",
       text: "You won't be able to revert this!",
       showCancelButton: true,
@@ -119,17 +119,24 @@ const Orders = () => {
               </button>
 
               <h2 className="text-xl font-semibold mb-4 font-roboto">
-                Products:{" "}
-                {order.products
-                  .map(
-                    (product) => `${product.product.name} (${product.amount})`
-                  )
-                  .join(", ")}
+                Client: {order.client.name}
               </h2>
-              <p className="text-gray-700 mb-2">Total: ${order.total}</p>
-              <p className="text-gray-700 mb-2">Client: {order.client.name}</p>
               <p className="text-gray-700 mb-2">Email: {order.client.email}</p>
-              <p className="text-gray-700">Phone: {order.client.phone}</p>
+              <p className="text-gray-700 mb-2">
+                Phone: {order.client.phone}
+              </p>
+              <h3 className="text-lg font-semibold mb-2">Products:</h3>
+              <ul className="list-disc list-inside">
+                {order.products.map((product, index) => (
+                  <li key={index}>
+                    {product.product.name} - Amount: {product.amount}
+                  </li>
+                ))}
+              </ul>
+              <p className="text-gray-700 mt-4">Total: ${order.total}</p>
+              <p className="text-gray-700 mt-4">
+                Date: {new Date(order.date).toLocaleDateString()}
+              </p>
             </div>
           ))}
         </div>
