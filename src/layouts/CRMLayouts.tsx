@@ -17,6 +17,10 @@ const CRMLayouts = () => {
       } catch (error) {
         navigate("/login", { replace: true });
         localStorage.removeItem("user");
+      } finally {
+        setTimeout(() => {
+          localStorage.removeItem("user");
+        }, 3600000);
       }
     };
 
@@ -24,14 +28,14 @@ const CRMLayouts = () => {
   }, [navigate]);
 
   useEffect(() => {
-    setInterval(() => {
+    setTimeout(() => {
       const user = localStorage.getItem("user");
 
       if (user) {
         const { name } = JSON.parse(user);
         setUserName(name);
       }
-    }, 1000);
+    }, 1500);
   }, []);
 
   return (
