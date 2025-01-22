@@ -16,7 +16,6 @@ const CRMLayouts = () => {
         localStorage.setItem("user", JSON.stringify(data));
       } catch (error) {
         navigate("/login", { replace: true });
-        localStorage.removeItem("user");
       } finally {
         setTimeout(() => {
           localStorage.removeItem("user");
