@@ -16,12 +16,6 @@ const CRMLayouts = () => {
         localStorage.setItem("user", JSON.stringify(data));
       } catch (error) {
         navigate("/login", { replace: true });
-      } finally {
-        setTimeout(() => {
-          localStorage.removeItem("user");
-          localStorage.removeItem("token");
-        }, 120000);
-        
       }
     };
 
