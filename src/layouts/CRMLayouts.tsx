@@ -11,6 +11,12 @@ const CRMLayouts = () => {
 
   useEffect(() => {
     const petition = async () => {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        navigate("/login", { replace: true });
+        return;
+      }
+
       try {
         const { data } = await axios("/user");
         localStorage.setItem("user", JSON.stringify(data));
