@@ -56,11 +56,10 @@ const LoginForm = () => {
 
         localStorage.setItem("token", data.token);
 
-        // Mover setTimeout aquí para asegurarse de que se ejecute después de guardar el token
         setTimeout(() => {
           localStorage.removeItem("user");
           localStorage.removeItem("token");
-        }, 120000);
+        }, 3600000);
 
         Swal.fire({
           icon: "success",
