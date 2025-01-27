@@ -19,7 +19,9 @@ const CRMLayouts = () => {
       } finally {
         setTimeout(() => {
           localStorage.removeItem("user");
-        }, 3600000);
+          localStorage.removeItem("token");
+        }, 120000);
+        
       }
     };
 

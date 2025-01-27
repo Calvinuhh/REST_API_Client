@@ -71,10 +71,6 @@ const LoginForm = () => {
         });
       } finally {
         setIsLoading(false);
-
-        setTimeout(() => {
-          localStorage.removeItem("token");
-        }, 3600000);
       }
     }
   };
