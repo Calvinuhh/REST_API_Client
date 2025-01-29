@@ -55,11 +55,7 @@ const LoginForm = () => {
         );
 
         localStorage.setItem("token", data.token);
-
-        setTimeout(() => {
-          localStorage.removeItem("user");
-          localStorage.removeItem("token");
-        }, 3600000);
+        localStorage.setItem("tokenTimestamp", new Date().getTime().toString());
 
         Swal.fire({
           icon: "success",

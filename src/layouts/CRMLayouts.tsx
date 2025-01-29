@@ -12,7 +12,18 @@ const CRMLayouts = () => {
   useEffect(() => {
     const petition = async () => {
       const token = localStorage.getItem("token");
-      if (!token) {
+      const tokenTimestamp = localStorage.getItem("tokenTimestamp");
+      const currentTime = new Date().getTime();
+
+      if (
+        !token ||
+        !tokenTimestamp ||
+        currentTime - parseInt(tokenTimestamp) > 60000
+      ) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        localStorage.removeItem("tokenTimestamp");
+
         navigate("/login", { replace: true });
         return;
       }
