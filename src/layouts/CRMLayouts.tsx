@@ -18,7 +18,7 @@ const CRMLayouts = () => {
       if (
         !token ||
         !tokenTimestamp ||
-        currentTime - parseInt(tokenTimestamp) > 60000
+        currentTime - parseInt(tokenTimestamp) > 3600000
       ) {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
