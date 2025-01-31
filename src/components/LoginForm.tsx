@@ -63,7 +63,7 @@ const LoginForm = () => {
           text: data.message,
         });
 
-        navigate("/clients", { replace: true });
+        navigate("/", { replace: true });
       } catch (error) {
         Swal.fire({
           icon: "error",
