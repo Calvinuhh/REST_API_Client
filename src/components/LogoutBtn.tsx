@@ -7,7 +7,6 @@ const LogoutBtn = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     localStorage.removeItem("tokenTimestamp");
-    //test test
     navigate("/login");
   };
 
